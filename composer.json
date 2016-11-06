@@ -1,0 +1,31 @@
+{
+    "name": "redound/phalcon-graphql-boilerplate",
+    "keywords": ["graphql", "api", "phalcon", "boilerplate"],
+    "description": "Phalcon GraphQL Boilerplate",
+    "type": "project",
+    "license": "MIT",
+    "homepage": "http://phalcon-rest.redound.org",
+    "require": {
+        "redound/phalcon-rest": "^1.5.0",
+        "firebase/php-jwt": "^3.0",
+        "webonyx/graphql-php": "dev-master"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.1"
+    },
+    "authors": [
+        {
+            "name": "Olivier Andriessen",
+            "email": "olivierandriessen@gmail.com"
+        },
+        {
+            "name": "Bart Blok",
+            "email": "bart@wittig.nl"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/redound/phalcon-graphql-boilerplate",
+        "issues": "https://github.com/redound/phalcon-graphql-boilerplate/issues",
+        "docs": "http://phalcon-rest.redound.org"
+    }
+}
