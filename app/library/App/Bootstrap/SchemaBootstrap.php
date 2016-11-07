@@ -207,7 +207,7 @@ class SchemaBootstrap implements BootstrapInterface
                     ->name('project')
                     ->description('Project of the Ticket')
                     ->type('Project')
-                    ->resolver('App\Handlers\ItemHandler::project')
+                    ->resolver('App\Handlers\TicketHandler::project')
                 )
             );
 
