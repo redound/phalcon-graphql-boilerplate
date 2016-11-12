@@ -2,6 +2,9 @@
 
 namespace App\Model;
 
+use App\Constants\Types;
+use Schema\Definition\FieldAware;
+
 class Project extends \App\Mvc\DateTrackingModel
 {
     public $id;
@@ -22,10 +25,27 @@ class Project extends \App\Mvc\DateTrackingModel
         ];
     }
 
+    public function typeMap()
+    {
+        return [
+            'state' => Types::TICKET_STATE_ENUM
+        ];
+    }
+
+    public function excludedFields(){
+
+        return ['createdAt', 'updatedAt'];
+    }
+
     public function initialize() {
 
         $this->hasMany('id', Ticket::class, 'projectId', [
             'alias' => 'Tickets',
         ]);
+    }
+
+    public function getTickets(){
+
+        return $this->getRelated('Tickets');
     }
 }

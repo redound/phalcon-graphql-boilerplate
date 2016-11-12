@@ -11,11 +11,6 @@ class ProjectHandler extends Handler
 {
     public function tickets(Project $source, $args, $context, $info)
     {
-        return Utils::connectionFromArray(Ticket::find([
-            'projectId = :projectId:',
-            'bind' => [
-                'projectId' => $source->id
-            ]
-        ]));
+        return Utils::connectionFromArray($source->getTickets());
     }
 }

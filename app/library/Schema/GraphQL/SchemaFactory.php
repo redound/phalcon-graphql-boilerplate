@@ -5,6 +5,7 @@ namespace Schema\GraphQL;
 use GraphQL\Type\Definition\Type;
 use Schema\Definition\EnumType;
 use Schema\Definition\ObjectType;
+use Schema\Definition\Types;
 use Schema\Dispatcher;
 
 class SchemaFactory
@@ -15,11 +16,11 @@ class SchemaFactory
         $typeRegistry = new TypeRegistry();
 
         $defaultScalarTypes = [
-            'String' => Type::string(),
-            'Int' => Type::int(),
-            'Float' => Type::float(),
-            'Boolean' => Type::boolean(),
-            'ID' => Type::id()
+            Types::STRING => Type::string(),
+            Types::INT => Type::int(),
+            Types::FLOAT => Type::float(),
+            Types::BOOLEAN => Type::boolean(),
+            Types::ID => Type::id()
         ];
 
         foreach ($defaultScalarTypes as $name => $type) {

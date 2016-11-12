@@ -7,6 +7,8 @@ use App\Constants\Services;
 use App\Constants\Types;
 use App\Handlers\ProjectHandler;
 use App\Handlers\ViewerHandler;
+use App\Model\Project;
+use App\Model\Ticket;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use PhalconRest\Api;
@@ -14,6 +16,7 @@ use Schema\Definition\EnumType;
 use Schema\Definition\EnumTypeValue;
 use Schema\Definition\Field;
 use Schema\Definition\InputField;
+use Schema\Definition\ModelObjectType;
 use Schema\Definition\ObjectType;
 use Schema\Definition\Schema;
 
@@ -60,37 +63,13 @@ class SchemaBootstrap implements BootstrapInterface
                 )
             )
 
-            ->embeddedObject(ObjectType::factory(Types::PROJECT, 'Represents a Project')
-                ->field(Field::id('id')
-                    ->nonNull()
-                )
-                ->field(Field::string('title', 'Title of the Project')
-                    ->nonNull()
-                )
-                ->field(Field::factory('state', Types::PROJECT_STATE_ENUM, 'State of the Project')
-                    ->nonNull()
-                )
-                ->field(Field::factory('tickets', Types::connection(Types::TICKET), 'Tickets of the Project')
+            ->embeddedObject(ModelObjectType::factory(Project::class, Types::PROJECT)
+                ->field(Field::factory('tickets', Types::connection(Types::TICKET))
                     ->nonNull()
                 )
             )
 
-            ->embeddedObject(ObjectType::factory(Types::TICKET, 'Represents a Ticket')
-                ->field(Field::id('id')
-                    ->nonNull()
-                )
-                ->field(Field::string('title')
-                    ->nonNull()
-                )
-                ->field(Field::factory('state', Types::TICKET_STATE_ENUM)
-                    ->nonNull()
-                )
-                ->field(Field::boolean('private', 'Whether the Ticket is private or not')
-                    ->nonNull()
-                )
-                ->field(Field::int('amountHours', 'How many hours the Ticket will cost to resolve')
-                    ->nonNull()
-                )
+            ->embeddedObject(ModelObjectType::factory(Ticket::class, Types::TICKET)
                 ->field(Field::factory('project', Types::PROJECT))
             );
 

@@ -2,11 +2,16 @@
 
 namespace App\Model;
 
+use App\Constants\Types;
+
 class Ticket extends \App\Mvc\DateTrackingModel
 {
     public $id;
     public $title;
     public $projectId;
+    public $amountHours;
+    public $state;
+    public $private;
 
     public function getSource()
     {
@@ -22,6 +27,14 @@ class Ticket extends \App\Mvc\DateTrackingModel
             'amount_hours' => 'amountHours',
             'state' => 'state',
             'private' => 'private'
+        ];
+    }
+
+    public function typeMap()
+    {
+        return [
+            'private' => Types::BOOLEAN,
+            'state' => Types::TICKET_STATE_ENUM
         ];
     }
 

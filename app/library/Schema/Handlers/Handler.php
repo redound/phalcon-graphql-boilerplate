@@ -2,8 +2,6 @@
 
 namespace Schema\Handlers;
 
-use GraphQL\Type\Definition\ResolveInfo;
-
 class Handler
 {
     public function __call($name, $arguments)

@@ -20,6 +20,11 @@ class ObjectType
         }
     }
 
+    /**
+     * @param string $name Name for the ObjectType
+     *
+     * @return static
+     */
     public function name($name)
     {
         $this->_name = $name;
@@ -31,6 +36,11 @@ class ObjectType
         return $this->_name;
     }
 
+    /**
+     * @param string $description Description for the ObjectType
+     *
+     * @return static
+     */
     public function description($description)
     {
         $this->_description = $description;
@@ -42,6 +52,11 @@ class ObjectType
         return $this->_description;
     }
 
+    /**
+     * @param string $handler Handler for the ObjectType
+     *
+     * @return static
+     */
     public function handler($handler)
     {
         $this->_handler = $handler;
@@ -53,10 +68,51 @@ class ObjectType
         return $this->_handler;
     }
 
+    /**
+     * @param Field $field Add field to ObjectType
+     *
+     * @return static
+     */
     public function field(Field $field)
     {
+        // Remove field if already exists
+        $this->removeField($field->getName());
+
         $this->_fields[] = $field;
         return $this;
+    }
+
+    public function removeField($fieldName)
+    {
+        $foundIndex = null;
+
+        foreach($this->_fields as $index => $field){
+
+            if($field->getName() == $fieldName){
+
+                $foundIndex = $index;
+                break;
+            }
+        }
+
+        if($foundIndex !== null) {
+            array_splice($this->_fields, $foundIndex, 1);
+        }
+
+        return $this;
+    }
+
+    public function fieldExists($fieldName)
+    {
+        foreach($this->_fields as $index => $field){
+
+            if($field->getName() == $fieldName){
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getFields()
@@ -64,6 +120,9 @@ class ObjectType
         return $this->_fields;
     }
 
+    /**
+     * @return static
+     */
     public static function factory($name=null, $description=null)
     {
         return new ObjectType($name, $description);
