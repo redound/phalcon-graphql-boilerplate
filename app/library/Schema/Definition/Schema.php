@@ -7,7 +7,7 @@ class Schema
     protected $_enumTypes = [];
     protected $_objectTypes = [];
 
-    public function enumType(EnumType $enumType)
+    public function enum(EnumType $enumType)
     {
         $this->_enumTypes[] = $enumType;
         return $this;
@@ -18,9 +18,47 @@ class Schema
         return $this->_enumTypes;
     }
 
-    public function objectType(ObjectType $objectType)
+    public function object(ObjectType $objectType)
     {
         $this->_objectTypes[] = $objectType;
+        return $this;
+    }
+
+    public function embeddedObject(ObjectType $objectType, array $connectionFields=[], array $edgeFields=[])
+    {
+        $name = $objectType->getName();
+
+        $connectionName = Types::connection($name);
+        $edgeName = Types::edge($name);
+
+        // Object
+        $this->object($objectType);
+
+        // Connection
+        $connectionType = ObjectType::factory($connectionName)
+            ->field(Field::listFactory('edges', $edgeName)
+                ->nonNull()
+                ->isNonNullList()
+            );
+
+        foreach($connectionFields as $field){
+            $connectionType->field($field);
+        }
+
+        $this->object($connectionType);
+
+        // Edge
+        $edgeType = ObjectType::factory($edgeName)
+            ->field(Field::factory('node', $name)
+                ->nonNull()
+            );
+
+        foreach($edgeFields as $field){
+            $edgeType->field($field);
+        }
+
+        $this->object($edgeType);
+
         return $this;
     }
 
