@@ -7,7 +7,7 @@ use Schema\Definition\InputField;
 class InputFieldFactory
 {
 
-    public function __invoke(InputField $inputField, TypeRegistry $typeRegistry)
+    public static function build(InputField $inputField, TypeRegistry $typeRegistry)
     {
 
         $type = $inputField->getType();

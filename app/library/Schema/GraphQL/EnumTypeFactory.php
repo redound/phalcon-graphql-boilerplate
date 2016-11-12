@@ -9,7 +9,7 @@ use Schema\Definition\EnumTypeValue;
 class EnumTypeFactory
 {
 
-    public function __invoke(SchemaEnumType $enumType)
+    public static function build(SchemaEnumType $enumType)
     {
         $values = [];
 

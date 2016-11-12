@@ -3,6 +3,7 @@
 namespace App\Bootstrap;
 
 use App\BootstrapInterface;
+use App\Handlers\ProjectHandler;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use PhalconRest\Api;
@@ -128,6 +129,7 @@ class SchemaBootstrap implements BootstrapInterface
             ->objectType(ObjectType::factory()
                 ->name('Project')
                 ->description('Represents a Project')
+                ->handler(ProjectHandler::class)
                 ->field(Field::factory()
                     ->name('id')
                     ->type('ID')
@@ -150,7 +152,6 @@ class SchemaBootstrap implements BootstrapInterface
                     ->description('Tickets of the Project')
                     ->type('TicketConnection')
                     ->nonNull()
-                    ->resolver('App\Handlers\ProjectHandler::tickets')
                 )
             )
             ->objectType(ObjectType::factory()
@@ -211,9 +212,6 @@ class SchemaBootstrap implements BootstrapInterface
                 )
             );
 
-        $graphQLSchema = new \Schema\GraphQL\Schema();
-
         $di->setShared('schema', $schema);
-        $di->setShared('graphQLSchema', $graphQLSchema->build($schema));
     }
 }

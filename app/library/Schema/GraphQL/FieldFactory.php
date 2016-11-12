@@ -3,12 +3,12 @@
 namespace Schema\GraphQL;
 
 use GraphQL\Type\Definition\ResolveInfo;
+use PhalconRest\Exception;
 use Schema\Definition\Field;
 use Schema\Definition\InputField;
 
 class FieldFactory
 {
-
     /**
      * If a no resolve functions are given, then a default resolve behavior is used
      * which takes the property of the source object of the same name as the field
@@ -18,7 +18,7 @@ class FieldFactory
      * @param array $resolvers
      * @return \Closure
      */
-    public function getResolverFn($resolvers = [])
+    private static function getResolverFn($resolvers = [])
     {
         if (empty($resolvers)) {
 
@@ -68,10 +68,8 @@ class FieldFactory
         };
     }
 
-    public function __invoke(Field $field, TypeRegistry $typeRegistry)
+    public static function build(Field $field, $handler, TypeRegistry $typeRegistry)
     {
-        $inputFieldFactory = new InputFieldFactory;
-
         $type = $field->getType();
         $nonNull = $field->getNonNull();
         $isList = $field->getIsList();
@@ -79,14 +77,14 @@ class FieldFactory
 
         $resolvers = $field->getResolvers();
 
-        $resolverFn = $this->getResolverFn($resolvers);
+        $resolverFn = static::getResolverFn($resolvers);
 
         $args = [];
 
         /** @var InputField $inputField */
         foreach ($field->getArgs() as $inputField) {
 
-            $args[$inputField->getName()] = $inputFieldFactory($inputField, $typeRegistry);
+            $args[$inputField->getName()] = InputFieldFactory::build($inputField, $typeRegistry);
         }
 
         return [

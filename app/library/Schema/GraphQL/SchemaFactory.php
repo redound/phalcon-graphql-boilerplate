@@ -2,20 +2,16 @@
 
 namespace Schema\GraphQL;
 
-use GraphQL\GraphQL;
 use GraphQL\Type\Definition\Type;
+use Phalcon\Di;
 use Schema\Definition\EnumType;
 use Schema\Definition\ObjectType;
 
-class Schema
+class SchemaFactory
 {
 
-    public function build(\Schema\Definition\Schema $schema)
+    public static function build(Di $di, $defaultNamespace, \Schema\Definition\Schema $schema)
     {
-
-        $enumTypeFactory = new EnumTypeFactory();
-        $objectTypeFactory = new ObjectTypeFactory();
-
         $typeRegistry = new TypeRegistry();
 
         $defaultScalarTypes = [
@@ -32,12 +28,12 @@ class Schema
 
         /** @var EnumType $enumType */
         foreach ($schema->getEnumTypes() as $enumType) {
-            $typeRegistry->register($enumType->getName(), $enumTypeFactory($enumType));
+            $typeRegistry->register($enumType->getName(), EnumTypeFactory::build($enumType));
         }
 
         /** @var ObjectType $objectType */
         foreach ($schema->getObjectTypes() as $objectType) {
-            $typeRegistry->register($objectType->getName(), $objectTypeFactory($objectType, $typeRegistry));
+            $typeRegistry->register($objectType->getName(), ObjectTypeFactory::build($di, $defaultNamespace, $objectType, $typeRegistry));
         }
 
         $schemaFields = [];

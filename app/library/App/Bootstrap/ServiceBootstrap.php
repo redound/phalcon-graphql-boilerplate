@@ -17,6 +17,8 @@ use Phalcon\Events\Manager as EventsManager;
 use League\Fractal\Manager as FractalManager;
 use Phalcon\Mvc\Model\Manager as ModelsManager;
 use PhalconRest\Auth\TokenParsers\JWTTokenParser;
+use Schema\Dispatcher;
+use Schema\Service;
 
 class ServiceBootstrap implements BootstrapInterface
 {
@@ -117,5 +119,13 @@ class ServiceBootstrap implements BootstrapInterface
          * @description PhalconRest - \PhalconRest\User\Service
          */
         $di->setShared(Services::USER_SERVICE, new UserService);
+
+        $di->setShared('graphqlDispatcher', function () {
+
+            $dispatcher = new Dispatcher();
+            $dispatcher->setDefaultNamespace('App\Handlers');
+
+            return $dispatcher;
+        });
     }
 }
