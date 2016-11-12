@@ -18,25 +18,16 @@ class RouteBootstrap implements BootstrapInterface
             $dispatcher = $di->get('graphqlDispatcher');
             $schema = $di->get('schema');
 
-            $dispatcher->dispatch($schema);
+            return $dispatcher->dispatch($schema);
         });
 
-        $api->get('/', function() use ($di) {
+        $api->get('/', function() use ($api) {
 
-            /** @var Dispatcher $dispatcher */
-            $dispatcher = $di->get('graphqlDispatcher');
-            $schema = $di->get('schema');
+            /** @var \Phalcon\Mvc\View\Simple $view */
+            $view = $api->di->get(Services::VIEW);
 
-            $dispatcher->dispatch($schema);
+            return $view->render('general/index');
         });
-
-//        $api->get('/', function() use ($api) {
-//
-//            /** @var \Phalcon\Mvc\View\Simple $view */
-//            $view = $api->di->get(Services::VIEW);
-//
-//            return $view->render('general/index');
-//        });
 
         $api->get('/proxy.html', function() use ($api, $config) {
 

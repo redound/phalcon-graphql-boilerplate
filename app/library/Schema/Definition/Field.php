@@ -4,22 +4,29 @@ namespace Schema\Definition;
 
 class Field
 {
-
     protected $_name;
-
     protected $_description;
-
     protected $_type;
-
     protected $_nonNull;
-
     protected $_isList;
-
     protected $_isNonNullList;
-
     protected $_resolvers = [];
-
     protected $_args = [];
+
+    public function __construct($name=null, $type=null, $description=null)
+    {
+        if($name !== null){
+            $this->_name = $name;
+        }
+
+        if($type !== null){
+            $this->_type = $type;
+        }
+
+        if($description !== null){
+            $this->_description = $description;
+        }
+    }
 
     public function name($name)
     {
@@ -109,8 +116,39 @@ class Field
         return $this->_args;
     }
 
-    public static function factory()
+    public static function factory($name=null, $type=null, $description=null)
     {
-        return new Field;
+        return new Field($name, $type, $description);
+    }
+
+    public static function listFactory($name=null, $type=null, $description=null)
+    {
+        return self::factory($name, $type, $description)->isList();
+    }
+
+
+    public static function string($name=null, $description=null)
+    {
+        return self::factory($name, Types::STRING, $description);
+    }
+
+    public static function int($name=null, $description=null)
+    {
+        return self::factory($name, Types::INT, $description);
+    }
+
+    public static function float($name=null, $description=null)
+    {
+        return self::factory($name, Types::FLOAT, $description);
+    }
+
+    public static function boolean($name=null, $description=null)
+    {
+        return self::factory($name, Types::BOOLEAN, $description);
+    }
+
+    public static function id($name=null, $description=null)
+    {
+        return self::factory($name, Types::ID, $description);
     }
 }

@@ -4,20 +4,24 @@ namespace Schema\Definition;
 
 class InputField
 {
-
     protected $_name;
-
-    protected $_description;
-
     protected $_type;
-
+    protected $_description;
     protected $_nonNull;
-
     protected $_isList;
-
     protected $_isNonNullList;
-
     protected $_defaultValue;
+
+    public function __construct($name=null, $type=null)
+    {
+        if($name !== null){
+            $this->_name = $name;
+        }
+
+        if($type !== null){
+            $this->_type = $type;
+        }
+    }
 
     public function name($name)
     {
@@ -97,8 +101,33 @@ class InputField
         return $this->_defaultValue;
     }
 
-    public static function factory()
+    public static function factory($name=null, $type=null)
     {
-        return new InputField;
+        return new InputField($name, $type);
+    }
+
+    public static function string($name=null)
+    {
+        return self::factory($name, Types::STRING);
+    }
+
+    public static function int($name=null)
+    {
+        return self::factory($name, Types::INT);
+    }
+
+    public static function float($name=null)
+    {
+        return self::factory($name, Types::FLOAT);
+    }
+
+    public static function boolean($name=null)
+    {
+        return self::factory($name, Types::BOOLEAN);
+    }
+
+    public static function id($name=null)
+    {
+        return self::factory($name, Types::ID);
     }
 }

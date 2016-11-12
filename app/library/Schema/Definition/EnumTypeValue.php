@@ -4,12 +4,24 @@ namespace Schema\Definition;
 
 class EnumTypeValue
 {
-
     protected $_name;
-
     protected $_description;
-
     protected $_value;
+
+    public function __construct($name=null, $value=null, $description=null)
+    {
+        if($name != null){
+            $this->_name = $name;
+        }
+
+        if($value !== null){
+            $this->_value = $value;
+        }
+
+        if($description !== null){
+            $this->_description = $description;
+        }
+    }
 
     public function name($name)
     {
@@ -44,7 +56,8 @@ class EnumTypeValue
         return $this->_value;
     }
 
-    public static function factory() {
-        return new EnumTypeValue;
+    public static function factory($name=null, $value=null, $description=null)
+    {
+        return new EnumTypeValue($name, $value, $description);
     }
 }

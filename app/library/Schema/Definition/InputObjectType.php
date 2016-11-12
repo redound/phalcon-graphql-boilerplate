@@ -4,14 +4,17 @@ namespace Schema\Definition;
 
 class InputObjectType
 {
-
     protected $_name;
-
     protected $_description;
-
     protected $_handler;
-
     protected $_fields = [];
+
+    public function __construct($name=null)
+    {
+        if($name !== null){
+            $this->_name = $name;
+        }
+    }
 
     public function name($name)
     {
@@ -43,7 +46,8 @@ class InputObjectType
         return $this->_fields;
     }
 
-    public static function factory() {
-        return new InputObjectType;
+    public static function factory($name=null)
+    {
+        return new InputObjectType($name);
     }
 }

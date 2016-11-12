@@ -4,14 +4,21 @@ namespace Schema\Definition;
 
 class ObjectType
 {
-
     protected $_name;
-
     protected $_description;
-
     protected $_handler;
-
     protected $_fields = [];
+
+    public function __construct($name=null, $description=null)
+    {
+        if($name !== null){
+            $this->_name = $name;
+        }
+
+        if($description !== null){
+            $this->_description = $description;
+        }
+    }
 
     public function name($name)
     {
@@ -57,7 +64,8 @@ class ObjectType
         return $this->_fields;
     }
 
-    public static function factory() {
-        return new ObjectType;
+    public static function factory($name=null, $description=null)
+    {
+        return new ObjectType($name, $description);
     }
 }

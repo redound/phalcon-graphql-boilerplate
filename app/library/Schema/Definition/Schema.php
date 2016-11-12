@@ -5,7 +5,6 @@ namespace Schema\Definition;
 class Schema
 {
     protected $_enumTypes = [];
-
     protected $_objectTypes = [];
 
     public function enumType(EnumType $enumType)

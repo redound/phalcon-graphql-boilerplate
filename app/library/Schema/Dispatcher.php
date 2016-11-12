@@ -3,6 +3,7 @@
 namespace Schema;
 
 use GraphQL\GraphQL;
+use Phalcon\Http\Request;
 use Schema\Definition\Field;
 use Schema\Definition\ObjectType;
 use Schema\Definition\Schema;
@@ -86,14 +87,15 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
         };
     }
 
-    public function dispatch(Schema $schema)
+    public function dispatch(Schema $schema, Request $request = null)
     {
         $graphqlSchema = SchemaFactory::build($this, $schema);
 
-        $request = $this->di->get('request');
-        $response = $this->di->get('response');
+        if(!$request) {
+            $request = $this->di->get('request');
+        }
 
-        if ($request->getHeader('content-type') === 'application/json') {
+        if ($request->getContentType() === 'application/json') {
             $data = $request->getJsonRawBody(true);
         } else {
             $data = $request->getQuery();
@@ -121,10 +123,9 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
                     ['message' => $exception->getMessage()]
                 ]
             ];
-        } finally {
 
-            $response->setJsonContent($result);
-            $response->send();
         }
+
+        return $result;
     }
 }
