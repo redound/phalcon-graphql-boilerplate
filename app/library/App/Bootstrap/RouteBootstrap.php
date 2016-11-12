@@ -15,8 +15,8 @@ class RouteBootstrap implements BootstrapInterface
     {
         $api->post('/', function() use ($di) {
 
-            $dispatcher = $di->get('graphqlDispatcher');
-            $schema = $di->get('schema');
+            $dispatcher = $di->get(Services::GRAPHQL_DISPATCHER);
+            $schema = $di->get(Services::SCHEMA);
 
             return $dispatcher->dispatch($schema);
         });
@@ -36,17 +36,6 @@ class RouteBootstrap implements BootstrapInterface
 
             $view->setVar('client', $config->clientHostName);
             return $view->render('general/proxy');
-        });
-
-        $api->get('/documentation.html', function() use ($api, $config) {
-
-            /** @var \Phalcon\Mvc\View\Simple $view */
-            $view = $api->di->get(Services::VIEW);
-
-            $view->setVar('title', $config->application->title);
-            $view->setVar('description', $config->application->description);
-            $view->setVar('documentationPath', $config->hostName . '/export/documentation.json');
-            return $view->render('general/documentation');
         });
     }
 }

@@ -68,4 +68,14 @@ class ObjectType
     {
         return new ObjectType($name, $description);
     }
+
+    public static function query($description=null)
+    {
+        return self::factory(Types::QUERY, $description);
+    }
+
+    public static function viewer($description=null)
+    {
+        return self::factory(Types::VIEWER, $description);
+    }
 }

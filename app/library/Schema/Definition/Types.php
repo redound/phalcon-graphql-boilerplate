@@ -10,6 +10,9 @@ class Types
     const BOOLEAN = "Boolean";
     const ID = "ID";
 
+    const QUERY = "Query";
+    const VIEWER = "Viewer";
+
     public static function connection($name){
 
         return $name . 'Connection';

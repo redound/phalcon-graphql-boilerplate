@@ -151,4 +151,14 @@ class Field
     {
         return self::factory($name, Types::ID, $description);
     }
+
+
+    public static function viewer()
+    {
+        return self::factory('viewer', Types::VIEWER)
+            ->nonNull()
+            ->resolver(function () {
+                return [];
+            });
+    }
 }

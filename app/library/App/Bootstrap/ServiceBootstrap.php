@@ -8,17 +8,14 @@ use Phalcon\DiInterface;
 use App\BootstrapInterface;
 use App\Constants\Services;
 use App\Auth\UsernameAccountType;
-use App\Fractal\CustomSerializer;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Simple as View;
 use App\User\Service as UserService;
 use App\Auth\Manager as AuthManager;
 use Phalcon\Events\Manager as EventsManager;
-use League\Fractal\Manager as FractalManager;
 use Phalcon\Mvc\Model\Manager as ModelsManager;
 use PhalconRest\Auth\TokenParsers\JWTTokenParser;
 use Schema\Dispatcher;
-use Schema\Service;
 
 class ServiceBootstrap implements BootstrapInterface
 {
@@ -77,7 +74,17 @@ class ServiceBootstrap implements BootstrapInterface
         });
 
         /**
-         * @description Phalcon - TokenParsers
+         * @description Phalcon - \Phalcon\Mvc\Model\Manager
+         */
+        $di->setShared(Services::MODELS_MANAGER, function () use ($di) {
+
+            $modelsManager = new ModelsManager;
+            return $modelsManager->setEventsManager($di->get(Services::EVENTS_MANAGER));
+        });
+
+
+        /**
+         * @description PhalconGraphQL - TokenParsers
          */
         $di->setShared(Services::TOKEN_PARSER, function () use ($di, $config) {
 
@@ -85,7 +92,7 @@ class ServiceBootstrap implements BootstrapInterface
         });
 
         /**
-         * @description Phalcon - AuthManager
+         * @description PhalconGraphQL - AuthManager
          */
         $di->setShared(Services::AUTH_MANAGER, function () use ($di, $config) {
 
@@ -96,31 +103,14 @@ class ServiceBootstrap implements BootstrapInterface
         });
 
         /**
-         * @description Phalcon - \Phalcon\Mvc\Model\Manager
-         */
-        $di->setShared(Services::MODELS_MANAGER, function () use ($di) {
-
-            $modelsManager = new ModelsManager;
-            return $modelsManager->setEventsManager($di->get(Services::EVENTS_MANAGER));
-        });
-
-        /**
-         * @description PhalconRest - \League\Fractal\Manager
-         */
-        $di->setShared(Services::FRACTAL_MANAGER, function () {
-
-            $fractal = new FractalManager;
-            $fractal->setSerializer(new CustomSerializer);
-
-            return $fractal;
-        });
-
-        /**
-         * @description PhalconRest - \PhalconRest\User\Service
+         * @description PhalconGraphQL - \PhalconRest\User\Service
          */
         $di->setShared(Services::USER_SERVICE, new UserService);
 
-        $di->setShared('graphqlDispatcher', function () {
+        /**
+         * @description PhalconGraphQL - \Schema\Dispatcher
+         */
+        $di->setShared(Services::GRAPHQL_DISPATCHER, function () {
 
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace('App\Handlers');

@@ -3,6 +3,7 @@
 namespace App\Bootstrap;
 
 use App\BootstrapInterface;
+use App\Constants\Services;
 use App\Constants\Types;
 use App\Handlers\ProjectHandler;
 use App\Handlers\ViewerHandler;
@@ -38,16 +39,11 @@ class SchemaBootstrap implements BootstrapInterface
             /**
              * Define Object Types
              */
-            ->object(ObjectType::factory(Types::QUERY)
-                ->field(Field::factory('viewer', Types::VIEWER)
-                    ->nonNull()
-                    ->resolver(function () {
-                        return [];
-                    })
-                )
+            ->object(ObjectType::query()
+                ->field(Field::viewer())
             )
 
-            ->object(ObjectType::factory(Types::VIEWER)
+            ->object(ObjectType::viewer()
                 ->field(Field::factory('allProjects', Types::connection(Types::PROJECT))
                     ->nonNull()
                 )
@@ -98,6 +94,6 @@ class SchemaBootstrap implements BootstrapInterface
                 ->field(Field::factory('project', Types::PROJECT))
             );
 
-        $di->setShared('schema', $schema);
+        $di->setShared(Services::SCHEMA, $schema);
     }
 }
