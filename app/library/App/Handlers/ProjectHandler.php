@@ -4,9 +4,10 @@ namespace App\Handlers;
 
 use App\Model\Project;
 use App\Model\Ticket;
+use Schema\Handlers\Handler;
 use Schema\Utils;
 
-class ProjectHandler
+class ProjectHandler extends Handler
 {
 
     public function tickets(Project $source, $args, $context, $info)

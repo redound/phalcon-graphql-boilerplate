@@ -7,6 +7,7 @@ use App\Constants\Services;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use PhalconRest\Api;
+use Schema\Dispatcher;
 
 class RouteBootstrap implements BootstrapInterface
 {
@@ -15,18 +16,27 @@ class RouteBootstrap implements BootstrapInterface
         $api->post('/', function() use ($di) {
 
             $dispatcher = $di->get('graphqlDispatcher');
-            $schema = $di->get('graphQLSchema');
+            $schema = $di->get('schema');
 
             $dispatcher->dispatch($schema);
         });
 
-        $api->get('/', function() use ($api) {
+        $api->get('/', function() use ($di) {
 
-            /** @var \Phalcon\Mvc\View\Simple $view */
-            $view = $api->di->get(Services::VIEW);
+            /** @var Dispatcher $dispatcher */
+            $dispatcher = $di->get('graphqlDispatcher');
+            $schema = $di->get('schema');
 
-            return $view->render('general/index');
+            $dispatcher->dispatch($schema);
         });
+
+//        $api->get('/', function() use ($api) {
+//
+//            /** @var \Phalcon\Mvc\View\Simple $view */
+//            $view = $api->di->get(Services::VIEW);
+//
+//            return $view->render('general/index');
+//        });
 
         $api->get('/proxy.html', function() use ($api, $config) {
 

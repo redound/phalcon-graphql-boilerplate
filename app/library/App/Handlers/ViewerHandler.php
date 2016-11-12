@@ -4,11 +4,11 @@ namespace App\Handlers;
 
 use App\Model\Project;
 use App\Model\Ticket;
+use Schema\Handlers\Handler;
 use Schema\Utils;
 
-class ViewerHandler
+class ViewerHandler extends Handler
 {
-
     public function allProjects($source, $args, $context, $info)
     {
         return Utils::connectionFromArray(Project::find());

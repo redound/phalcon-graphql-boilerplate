@@ -4,6 +4,7 @@ namespace App\Bootstrap;
 
 use App\BootstrapInterface;
 use App\Handlers\ProjectHandler;
+use App\Handlers\ViewerHandler;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use PhalconRest\Api;
@@ -79,7 +80,6 @@ class SchemaBootstrap implements BootstrapInterface
                     ->name('allProjects')
                     ->type('ProjectConnection')
                     ->nonNull()
-                    ->resolver('App\Handlers\ViewerHandler::allProjects')
                 )
                 ->field(Field::factory()
                     ->name('findProject')
@@ -89,13 +89,11 @@ class SchemaBootstrap implements BootstrapInterface
                     )
                     ->type('Project')
                     ->nonNull()
-                    ->resolver('App\Handlers\ViewerHandler::findProject')
                 )
                 ->field(Field::factory()
                     ->name('allTickets')
                     ->type('TicketConnection')
                     ->nonNull()
-                    ->resolver('App\Handlers\ViewerHandler::allTickets')
                 )
                 ->field(Field::factory()
                     ->name('findTicket')
@@ -105,7 +103,6 @@ class SchemaBootstrap implements BootstrapInterface
                     )
                     ->type('Ticket')
                     ->nonNull()
-                    ->resolver('App\Handlers\ViewerHandler::findTicket')
                 )
             )
             ->objectType(ObjectType::factory()
@@ -129,7 +126,6 @@ class SchemaBootstrap implements BootstrapInterface
             ->objectType(ObjectType::factory()
                 ->name('Project')
                 ->description('Represents a Project')
-                ->handler(ProjectHandler::class)
                 ->field(Field::factory()
                     ->name('id')
                     ->type('ID')
@@ -208,7 +204,6 @@ class SchemaBootstrap implements BootstrapInterface
                     ->name('project')
                     ->description('Project of the Ticket')
                     ->type('Project')
-                    ->resolver('App\Handlers\TicketHandler::project')
                 )
             );
 
