@@ -5,17 +5,14 @@ namespace App\Bootstrap;
 use App\BootstrapInterface;
 use App\Constants\Services;
 use App\Constants\Types;
-use App\Handlers\ProjectHandler;
-use App\Handlers\ViewerHandler;
 use App\Model\Project;
 use App\Model\Ticket;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use PhalconRest\Api;
 use Schema\Definition\EnumType;
-use Schema\Definition\EnumTypeValue;
 use Schema\Definition\Field;
-use Schema\Definition\InputField;
+use Schema\Definition\ModelFields\ModelField;
 use Schema\Definition\ModelObjectType;
 use Schema\Definition\ObjectType;
 use Schema\Definition\Schema;
@@ -47,20 +44,14 @@ class SchemaBootstrap implements BootstrapInterface
             )
 
             ->object(ObjectType::viewer()
-                ->field(Field::factory('allProjects', Types::connection(Types::PROJECT))
+                ->field(ModelField::all(Project::class, 'allProjects', Types::connection(Types::PROJECT))
                     ->nonNull()
                 )
-                ->field(Field::factory('findProject', Types::PROJECT)
-                    ->arg(InputField::id('id'))
+                ->field(ModelField::find(Project::class, 'findProject', Types::PROJECT))
+                ->field(ModelField::all(Ticket::class, 'allTickets', Types::connection(Types::TICKET))
                     ->nonNull()
                 )
-                ->field(Field::factory('allTickets', Types::connection(Types::TICKET))
-                    ->nonNull()
-                )
-                ->field(Field::factory('findTicket', Types::TICKET)
-                    ->arg(InputField::id('id'))
-                    ->nonNull()
-                )
+                ->field(ModelField::find(Ticket::class, 'findTicket', Types::TICKET))
             )
 
             ->embeddedObject(ModelObjectType::factory(Project::class, Types::PROJECT)

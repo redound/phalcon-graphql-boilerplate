@@ -9,6 +9,7 @@ use Schema\Definition\ObjectType;
 use Schema\Definition\Schema;
 use Schema\GraphQL\SchemaFactory;
 use Schema\Handlers\Handler;
+use Schema\Resolvers\ResolverInterface;
 
 class Dispatcher extends \Phalcon\Mvc\User\Plugin
 {
@@ -60,7 +61,7 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
             $fieldName = $field->getName();
 
             if (empty($resolvers)) {
-                $resolvers = [$fieldName];
+                return $handler->$fieldName($source, $args, $field);
             }
 
             foreach ($resolvers as $resolverFn) {
@@ -80,6 +81,11 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
 
                         $obj = new $className;
                         $source = $obj->$methodName($source, $args, $field);
+                    }
+                    else if(class_exists($resolverFn, true) && method_exists($resolverFn, 'resolve')) {
+
+                        $resolverObject = new $resolverFn();
+                        $source = $resolverObject->resolve($source, $args, $field);
                     }
                     else {
 

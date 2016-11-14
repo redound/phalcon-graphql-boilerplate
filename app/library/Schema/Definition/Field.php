@@ -2,6 +2,8 @@
 
 namespace Schema\Definition;
 
+use Schema\Resolvers\EmptyResolver;
+
 class Field
 {
     protected $_name;
@@ -157,8 +159,6 @@ class Field
     {
         return self::factory('viewer', Types::VIEWER)
             ->nonNull()
-            ->resolver(function () {
-                return [];
-            });
+            ->resolver(EmptyResolver::class);
     }
 }
