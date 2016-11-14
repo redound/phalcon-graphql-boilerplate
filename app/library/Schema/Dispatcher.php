@@ -19,7 +19,7 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
         $this->defaultNamespace = rtrim($namespace, '\\');
     }
 
-    public function createHandler(ObjectType $objectType)
+    public function createHandler(ObjectType $objectType, Schema $schema)
     {
         $handler = null;
         $handlerClassName = $objectType->getHandler();
@@ -43,26 +43,31 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
             $handler->setDI($this->di);
         }
 
+        if($handler instanceof Handler){
+
+            $handler->setSchema($schema);
+            $handler->setObjectType($objectType);
+        }
+
         return $handler;
     }
 
     public function createResolver($handler, Field $field)
     {
-        return function ($source, $args, $context, $info) use ($handler, $field) {
+        return function ($source, $args) use ($handler, $field) {
 
             $resolvers = $field->getResolvers();
-
             $fieldName = $field->getName();
 
             if (empty($resolvers)) {
-                return $handler->$fieldName($source, $args, $context, $info);
+                $resolvers = [$fieldName];
             }
 
             foreach ($resolvers as $resolverFn) {
 
                 if (is_callable($resolverFn)) {
 
-                    $source = call_user_func($resolverFn, $source, $args, $context, $info);
+                    $source = call_user_func($resolverFn, $source, $args, $field);
                 }
                 else if (is_string($resolverFn)) {
 
@@ -74,11 +79,11 @@ class Dispatcher extends \Phalcon\Mvc\User\Plugin
                         $methodName = $parts[1];
 
                         $obj = new $className;
-                        $source = $obj->$methodName($source, $args, $context, $info);
+                        $source = $obj->$methodName($source, $args, $field);
                     }
                     else {
 
-                        $source = $handler->$resolverFn($source, $args, $context, $info);
+                        $source = $handler->$resolverFn($source, $args, $field);
                     }
                 }
             }

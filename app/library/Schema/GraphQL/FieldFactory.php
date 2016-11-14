@@ -4,6 +4,7 @@ namespace Schema\GraphQL;
 
 use Schema\Definition\Field;
 use Schema\Definition\InputField;
+use Schema\Definition\ObjectType;
 use Schema\Dispatcher;
 
 class FieldFactory

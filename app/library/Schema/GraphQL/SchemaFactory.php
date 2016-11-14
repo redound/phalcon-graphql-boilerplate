@@ -5,13 +5,14 @@ namespace Schema\GraphQL;
 use GraphQL\Type\Definition\Type;
 use Schema\Definition\EnumType;
 use Schema\Definition\ObjectType;
+use Schema\Definition\Schema;
 use Schema\Definition\Types;
 use Schema\Dispatcher;
 
 class SchemaFactory
 {
 
-    public static function build(Dispatcher $dispatcher, \Schema\Definition\Schema $schema)
+    public static function build(Dispatcher $dispatcher, Schema $schema)
     {
         $typeRegistry = new TypeRegistry();
 
@@ -34,7 +35,7 @@ class SchemaFactory
 
         /** @var ObjectType $objectType */
         foreach ($schema->getObjectTypes() as $objectType) {
-            $typeRegistry->register($objectType->getName(), ObjectTypeFactory::build($dispatcher, $objectType, $typeRegistry));
+            $typeRegistry->register($objectType->getName(), ObjectTypeFactory::build($dispatcher, $schema, $objectType, $typeRegistry));
         }
 
         $schemaFields = [];

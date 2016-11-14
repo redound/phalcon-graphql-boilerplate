@@ -9,22 +9,22 @@ use Schema\Utils;
 
 class ViewerHandler extends Handler
 {
-    public function allProjects($source, $args, $context, $info)
+    public function allProjects()
     {
         return Utils::connectionFromArray(Project::find());
     }
 
-    public function findProject($source, $args, $context, $info)
+    public function findProject($source, $args)
     {
         return Project::findFirst($args['id']);
     }
 
-    public function allTickets($source, $args, $context, $info)
+    public function allTickets()
     {
         return Utils::connectionFromArray(Ticket::find());
     }
 
-    public function findTicket($source, $args, $context, $info)
+    public function findTicket($source, $args)
     {
         return Ticket::findFirst($args['id']);
     }

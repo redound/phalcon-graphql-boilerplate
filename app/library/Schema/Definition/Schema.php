@@ -2,6 +2,8 @@
 
 namespace Schema\Definition;
 
+use Schema\Handlers\PassHandler;
+
 class Schema
 {
     protected $_enumTypes = [];
@@ -36,6 +38,7 @@ class Schema
 
         // Connection
         $connectionType = ObjectType::factory($connectionName)
+            ->handler(PassHandler::class)
             ->field(Field::listFactory('edges', $edgeName)
                 ->nonNull()
                 ->isNonNullList()
@@ -49,6 +52,7 @@ class Schema
 
         // Edge
         $edgeType = ObjectType::factory($edgeName)
+            ->handler(PassHandler::class)
             ->field(Field::factory('node', $name)
                 ->nonNull()
             );

@@ -41,9 +41,15 @@ class EnumType
         return $this->_description;
     }
 
-    public function value($value)
+    public function addValue($value)
     {
         $this->_values[] = $value;
+        return $this;
+    }
+
+    public function value($name, $value, $description=null)
+    {
+        $this->addValue(EnumTypeValue::factory($name, $value, $description));
         return $this;
     }
 

@@ -2,13 +2,40 @@
 
 namespace Schema\Handlers;
 
+use Schema\Definition\Field;
+use Schema\Definition\ObjectType;
+use Schema\Definition\Schema;
+
 class Handler
 {
+    /** @var ObjectType */
+    protected $objectType;
+
+    /** @var Schema */
+    protected $schema;
+
+    /**
+     * @param ObjectType $objectType
+     */
+    public function setObjectType($objectType)
+    {
+        $this->objectType = $objectType;
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    public function setSchema($schema)
+    {
+        $this->schema = $schema;
+    }
+
     public function __call($name, $arguments)
     {
-        list($source, $args, $context, $info) = $arguments;
+        /** @var Field $field */
+        list($source, $args, $field) = $arguments;
 
-        $fieldName = $info->fieldName;
+        $fieldName = $field->getName();
         $property = null;
 
         if (is_array($source) || $source instanceof \ArrayAccess) {
@@ -21,6 +48,6 @@ class Handler
             }
         }
 
-        return $property instanceof \Closure ? $property($source, $args, $context) : $property;
+        return $property instanceof \Closure ? $property($source, $args, $field) : $property;
     }
 }

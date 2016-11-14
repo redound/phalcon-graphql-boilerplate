@@ -30,13 +30,13 @@ class SchemaBootstrap implements BootstrapInterface
              * Define Enum Types
              */
             ->enum(EnumType::factory(Types::PROJECT_STATE_ENUM, 'Represents the state of the project')
-                ->value(EnumTypeValue::factory('OPEN', 0, 'Open'))
-                ->value(EnumTypeValue::factory('CLOSED', 1, 'Closed'))
+                ->value('OPEN', 0, 'Open')
+                ->value('CLOSED', 1, 'Closed')
             )
             ->enum(EnumType::factory(Types::TICKET_STATE_ENUM, 'Represents the state of the ticket')
-                ->value(EnumTypeValue::factory('NEW', 0, 'New'))
-                ->value(EnumTypeValue::factory('IN_PROGRESS', 1, 'In Progress'))
-                ->value(EnumTypeValue::factory('COMPLETED', 2, 'Completed'))
+                ->value('NEW', 0, 'New')
+                ->value('IN_PROGRESS', 1, 'In Progress')
+                ->value('COMPLETED', 2, 'Completed')
             )
 
             /**

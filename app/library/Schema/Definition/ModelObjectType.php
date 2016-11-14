@@ -11,7 +11,7 @@ class ModelObjectType extends ObjectType
 {
     protected $modelClass;
     protected $built = false;
-    protected $skippedFields = [];
+    protected $excludedFields = [];
 
     protected $di;
 
@@ -30,12 +30,9 @@ class ModelObjectType extends ObjectType
         $this->di = Di::getDefault();
     }
 
-    public function skip($field)
+    public function exclude($field)
     {
-        $this->removeField($field);
-        $this->skippedFields[] = $field;
-
-        return $this;
+        return $this->removeField($field);
     }
 
     public function getFields()
@@ -48,6 +45,21 @@ class ModelObjectType extends ObjectType
         }
 
         return parent::getFields();
+    }
+
+    public function field(Field $field)
+    {
+        parent::field($field);
+        $this->built = false;
+
+        return $this;
+    }
+
+    public function removeField($fieldName)
+    {
+        $this->excludedFields[] = $fieldName;
+
+        return parent::removeField($fieldName);
     }
 
     protected function build()
@@ -63,7 +75,7 @@ class ModelObjectType extends ObjectType
         $nonNullAttributes = $modelsMetadata->getNotNullAttributes($model);
         $identityField = $modelsMetadata->getIdentityField($model);
 
-        $skip = $this->skippedFields;
+        $skip = $this->excludedFields;
         $typeMap = [];
 
         if(method_exists($model, 'excludedFields')){
