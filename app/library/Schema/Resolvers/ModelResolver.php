@@ -4,7 +4,7 @@ namespace Schema\Resolvers;
 
 
 use Schema\Definition\Field;
-use Schema\Definition\ModelFields\ModelField;
+use Schema\Definition\ModelField;
 
 abstract class ModelResolver implements ResolverInterface
 {

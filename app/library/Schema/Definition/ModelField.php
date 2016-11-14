@@ -1,12 +1,10 @@
 <?php
 
-namespace Schema\Definition\ModelFields;
+namespace Schema\Definition;
 
-use Schema\Definition\Field;
-use Schema\Definition\InputField;
-use Schema\Definition\Types;
 use Schema\Resolvers\AllModelResolver;
 use Schema\Resolvers\FindModelResolver;
+use Schema\Utils;
 
 class ModelField extends Field
 {
@@ -14,6 +12,10 @@ class ModelField extends Field
 
     public function __construct($model=null, $name=null, $type=null, $description=null)
     {
+        if($type === null){
+            $type = Utils::getShortClass($model);
+        }
+
         parent::__construct($name, $type, $description);
 
         $this->_model = $model;
@@ -58,13 +60,22 @@ class ModelField extends Field
 
     public static function all($model=null, $name=null, $type=null, $description=null)
     {
+        if($name === null){
+            $name = 'all' . ucfirst(Utils::getShortClass($model)) . 's';
+        }
+
         return self::factory($model, $name, $type, $description)
             ->resolver(AllModelResolver::class)
+            ->isList()
             ->nonNull();
     }
 
     public static function find($model=null, $name=null, $type=null, $description=null)
     {
+        if($name === null){
+            $name = 'find' . ucfirst(Utils::getShortClass($model));
+        }
+
         return self::factory($model, $name, $type, $description)
             ->resolver(FindModelResolver::class)
             ->arg(InputField::factory('id', Types::ID));

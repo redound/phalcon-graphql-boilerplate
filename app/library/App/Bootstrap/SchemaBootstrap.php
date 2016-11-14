@@ -12,7 +12,7 @@ use Phalcon\DiInterface;
 use PhalconRest\Api;
 use Schema\Definition\EnumType;
 use Schema\Definition\Field;
-use Schema\Definition\ModelFields\ModelField;
+use Schema\Definition\ModelField;
 use Schema\Definition\ModelObjectType;
 use Schema\Definition\ObjectType;
 use Schema\Definition\Schema;
@@ -44,21 +44,14 @@ class SchemaBootstrap implements BootstrapInterface
             )
 
             ->object(ObjectType::viewer()
-                ->field(ModelField::all(Project::class, 'allProjects', Types::connection(Types::PROJECT)))
-                ->field(ModelField::find(Project::class, 'findProject', Types::PROJECT))
-                ->field(ModelField::all(Ticket::class, 'allTickets', Types::connection(Types::TICKET)))
-                ->field(ModelField::find(Ticket::class, 'findTicket', Types::TICKET))
+                ->field(ModelField::all(Project::class)->embed())
+                ->field(ModelField::find(Project::class))
+                ->field(ModelField::all(Ticket::class)->embed())
+                ->field(ModelField::find(Ticket::class))
             )
 
-            ->embeddedObject(ModelObjectType::factory(Project::class, Types::PROJECT)
-                ->field(Field::factory('tickets', Types::connection(Types::TICKET))
-                    ->nonNull()
-                )
-            )
-
-            ->embeddedObject(ModelObjectType::factory(Ticket::class, Types::TICKET)
-                ->field(Field::factory('project', Types::PROJECT))
-            );
+            ->embeddedObject(ModelObjectType::factory(Project::class)->embedRelations())
+            ->embeddedObject(ModelObjectType::factory(Ticket::class)->embedRelations());
 
         $di->setShared(Services::SCHEMA, $schema);
     }

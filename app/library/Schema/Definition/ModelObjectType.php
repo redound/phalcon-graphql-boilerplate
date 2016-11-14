@@ -4,14 +4,21 @@ namespace Schema\Definition;
 
 use Phalcon\Db\Column;
 use Phalcon\Di;
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Manager;
 use Phalcon\Mvc\Model\MetaData;
+use Phalcon\Mvc\Model\RelationInterface;
 use Schema\Constants\Services;
+use Schema\Utils;
 
 class ModelObjectType extends ObjectType
 {
-    protected $modelClass;
-    protected $built = false;
-    protected $excludedFields = [];
+    protected $_modelClass;
+    protected $_built = false;
+
+    protected $_excludedFields = [];
+    protected $_excludeRelations = false;
+    protected $_embedRelations = false;
 
     protected $di;
 
@@ -19,13 +26,12 @@ class ModelObjectType extends ObjectType
     {
         // Use class name if name not provided
         if($name === null) {
-            $path = explode('\\', $modelClass);
-            $name = array_pop($path);
+            $name = Utils::getShortClass($modelClass);
         }
 
         parent::__construct($name, $description);
 
-        $this->modelClass = $modelClass;
+        $this->_modelClass = $modelClass;
 
         $this->di = Di::getDefault();
     }
@@ -35,13 +41,29 @@ class ModelObjectType extends ObjectType
         return $this->removeField($field);
     }
 
+    public function excludeRelations($excludeRelations = true)
+    {
+        $this->_excludeRelations = $excludeRelations;
+        $this->_built = false;
+
+        return $this;
+    }
+
+    public function embedRelations($embedRelations = true)
+    {
+        $this->_embedRelations = $embedRelations;
+        $this->_built = false;
+
+        return $this;
+    }
+
     public function getFields()
     {
         // Delay building, build when the fields are queried
-        if(!$this->built){
+        if(!$this->_built){
 
             $this->build();
-            $this->built = true;
+            $this->_built = true;
         }
 
         return parent::getFields();
@@ -50,14 +72,14 @@ class ModelObjectType extends ObjectType
     public function field(Field $field)
     {
         parent::field($field);
-        $this->built = false;
+        $this->_built = false;
 
         return $this;
     }
 
     public function removeField($fieldName)
     {
-        $this->excludedFields[] = $fieldName;
+        $this->_excludedFields[] = $fieldName;
 
         return parent::removeField($fieldName);
     }
@@ -67,15 +89,22 @@ class ModelObjectType extends ObjectType
         /** @var MetaData $modelsMetadata */
         $modelsMetadata = $this->di->get(Services::MODELS_METADATA);
 
-        $modelClass = $this->modelClass;
+        /** @var Manager $modelsManager */
+        $modelsManager = $this->di->get(Services::MODELS_MANAGER);
+
+        $modelClass = $this->_modelClass;
         $model = new $modelClass();
 
+        $originalFields = $this->_fields;
+        $newFields = [];
+
+        // Attributes
         $columnMap = $modelsMetadata->getColumnMap($model);
         $dataTypes = $modelsMetadata->getDataTypes($model);
         $nonNullAttributes = $modelsMetadata->getNotNullAttributes($model);
         $identityField = $modelsMetadata->getIdentityField($model);
 
-        $skip = $this->excludedFields;
+        $skip = $this->_excludedFields;
         $typeMap = [];
 
         if(method_exists($model, 'excludedFields')){
@@ -111,9 +140,6 @@ class ModelObjectType extends ObjectType
             }
         }
 
-        $originalFields = $this->_fields;
-        $newFields = [];
-
         foreach($mappedDataTypes as $attribute => $type){
 
             if(in_array($attribute, $skip) || $this->fieldExists($attribute)){
@@ -126,6 +152,30 @@ class ModelObjectType extends ObjectType
             }
 
             $newFields[] = $field;
+        }
+
+        // Relations
+        if(!$this->_excludeRelations) {
+
+            /** @var RelationInterface $relation */
+            foreach ($modelsManager->getRelations($modelClass) as $relation) {
+
+                $referencedModelClass = Utils::getShortClass($relation->getReferencedModel());
+
+                $options = $relation->getOptions();
+                $relationName = is_array($options) && array_key_exists('alias',
+                    $options) ? $options['alias'] : $referencedModelClass;
+                $isList = in_array($relation->getType(), [Model\Relation::HAS_MANY, Model\Relation::HAS_MANY_THROUGH]);
+
+                $field = Field::factory(lcfirst($relationName), $referencedModelClass)
+                    ->isList($isList);
+
+                if($this->_embedRelations){
+                    $field->embed();
+                }
+
+                $newFields[] = $field;
+            }
         }
 
         $this->_fields = array_merge($newFields, $originalFields);

@@ -43,9 +43,4 @@ class Project extends \App\Mvc\DateTrackingModel
             'alias' => 'Tickets',
         ]);
     }
-
-    public function getTickets(){
-
-        return $this->getRelated('Tickets');
-    }
 }

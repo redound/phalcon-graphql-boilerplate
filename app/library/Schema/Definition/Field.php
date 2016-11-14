@@ -63,6 +63,14 @@ class Field
         return $this->_type;
     }
 
+    public function embed(){
+
+        $this->_type = $this->_isList ? Types::connection($this->_type) : Types::edge($this->_type);
+        $this->_isList = false;
+
+        return $this;
+    }
+
     public function nonNull($nonNull = true)
     {
         $this->_nonNull = $nonNull;

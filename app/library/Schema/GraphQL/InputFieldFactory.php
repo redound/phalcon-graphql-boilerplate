@@ -9,7 +9,6 @@ class InputFieldFactory
 
     public static function build(InputField $inputField, TypeRegistry $typeRegistry)
     {
-
         $type = $inputField->getType();
         $nonNull = $inputField->getNonNull();
         $isList = $inputField->getIsList();
