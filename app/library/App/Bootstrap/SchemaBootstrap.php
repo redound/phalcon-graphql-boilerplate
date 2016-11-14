@@ -44,13 +44,9 @@ class SchemaBootstrap implements BootstrapInterface
             )
 
             ->object(ObjectType::viewer()
-                ->field(ModelField::all(Project::class, 'allProjects', Types::connection(Types::PROJECT))
-                    ->nonNull()
-                )
+                ->field(ModelField::all(Project::class, 'allProjects', Types::connection(Types::PROJECT)))
                 ->field(ModelField::find(Project::class, 'findProject', Types::PROJECT))
-                ->field(ModelField::all(Ticket::class, 'allTickets', Types::connection(Types::TICKET))
-                    ->nonNull()
-                )
+                ->field(ModelField::all(Ticket::class, 'allTickets', Types::connection(Types::TICKET)))
                 ->field(ModelField::find(Ticket::class, 'findTicket', Types::TICKET))
             )
 

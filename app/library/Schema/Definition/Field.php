@@ -69,6 +69,12 @@ class Field
         return $this;
     }
 
+    public function null($null = true)
+    {
+        $this->_nonNull = !$null;
+        return $this;
+    }
+
     public function getNonNull()
     {
         return $this->_nonNull;

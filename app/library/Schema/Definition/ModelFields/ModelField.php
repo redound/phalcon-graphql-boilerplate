@@ -59,7 +59,8 @@ class ModelField extends Field
     public static function all($model=null, $name=null, $type=null, $description=null)
     {
         return self::factory($model, $name, $type, $description)
-            ->resolver(AllModelResolver::class);
+            ->resolver(AllModelResolver::class)
+            ->nonNull();
     }
 
     public static function find($model=null, $name=null, $type=null, $description=null)
