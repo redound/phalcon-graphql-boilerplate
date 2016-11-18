@@ -6,7 +6,7 @@ $config = null;
 /** @var \PhalconApi\Api $app */
 $app = null;
 
-/** @var \PhalconApi\Http\Response $response */
+/** @var \PhalconGraphQL\Http\Response $response */
 $response = null;
 
 try {
@@ -54,7 +54,7 @@ try {
 
 
     // Instantiate application & DI
-    $di = new PhalconApi\Di\FactoryDefault();
+    $di = new PhalconGraphQL\Di\FactoryDefault();
     $app = new PhalconApi\Api($di);
 
     // Bootstrap components
@@ -88,10 +88,10 @@ try {
 } catch (\Exception $e) {
 
     // Handle exceptions
-    $di = $app && $app->di ? $app->di : new PhalconApi\Di\FactoryDefault();
+    $di = $app && $app->di ? $app->di : new PhalconGraphQL\Di\FactoryDefault();
     $response = $di->getShared(App\Constants\Services::RESPONSE);
-    if(!$response || !$response instanceof PhalconApi\Http\Response){
-        $response = new PhalconApi\Http\Response();
+    if(!$response || !$response instanceof PhalconGraphQL\Http\Response){
+        $response = new PhalconGraphQL\Http\Response();
     }
 
     $debugMode = isset($config->debug) ? $config->debug : (APPLICATION_ENV == 'development');
