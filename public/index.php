@@ -24,8 +24,7 @@ try {
     $loader = new \Phalcon\Loader();
 
     $loader->registerNamespaces([
-        'App' => APP_DIR . '/library/App',
-        'Schema' => APP_DIR . '/library/Schema'
+        'App' => APP_DIR . '/library/App'
     ]);
 
     $loader->registerDirs([
