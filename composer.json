@@ -6,12 +6,8 @@
     "license": "MIT",
     "homepage": "http://phalcon-rest.redound.org",
     "require": {
-        "redound/phalcon-rest": "^1.5.0",
         "firebase/php-jwt": "^3.0",
-        "webonyx/graphql-php": "dev-master"
-    },
-    "require-dev": {
-        "codeception/codeception": "^2.1"
+        "redound/phalcon-graphql": "dev-development"
     },
     "authors": [
         {

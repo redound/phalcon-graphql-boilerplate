@@ -3,7 +3,7 @@
 namespace App\Bootstrap;
 
 use Phalcon\Config;
-use PhalconRest\Api;
+use PhalconApi\Api;
 use Phalcon\DiInterface;
 use App\BootstrapInterface;
 use App\Constants\Services;
@@ -14,8 +14,8 @@ use App\User\Service as UserService;
 use App\Auth\Manager as AuthManager;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Mvc\Model\Manager as ModelsManager;
-use PhalconRest\Auth\TokenParsers\JWTTokenParser;
-use Schema\Dispatcher;
+use PhalconApi\Auth\TokenParsers\JWTTokenParser;
+use PhalconGraphQL\Dispatcher;
 
 class ServiceBootstrap implements BootstrapInterface
 {
@@ -103,7 +103,7 @@ class ServiceBootstrap implements BootstrapInterface
         });
 
         /**
-         * @description PhalconGraphQL - \PhalconRest\User\Service
+         * @description PhalconGraphQL - \PhalconApi\User\Service
          */
         $di->setShared(Services::USER_SERVICE, new UserService);
 

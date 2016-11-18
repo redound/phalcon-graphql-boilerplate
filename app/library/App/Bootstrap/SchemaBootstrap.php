@@ -9,13 +9,13 @@ use App\Model\Project;
 use App\Model\Ticket;
 use Phalcon\Config;
 use Phalcon\DiInterface;
-use PhalconRest\Api;
-use Schema\Definition\EnumType;
-use Schema\Definition\Field;
-use Schema\Definition\ModelField;
-use Schema\Definition\ModelObjectType;
-use Schema\Definition\ObjectType;
-use Schema\Definition\Schema;
+use PhalconApi\Api;
+use PhalconGraphQL\Definition\EnumType;
+use PhalconGraphQL\Definition\Field;
+use PhalconGraphQL\Definition\ModelField;
+use PhalconGraphQL\Definition\ModelObjectType;
+use PhalconGraphQL\Definition\ObjectType;
+use PhalconGraphQL\Definition\Schema;
 
 class SchemaBootstrap implements BootstrapInterface
 {

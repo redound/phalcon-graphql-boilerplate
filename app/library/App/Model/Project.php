@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Constants\Types;
-use Schema\Definition\FieldAware;
 
 class Project extends \App\Mvc\DateTrackingModel
 {

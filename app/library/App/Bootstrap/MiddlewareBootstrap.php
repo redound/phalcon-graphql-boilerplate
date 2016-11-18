@@ -5,14 +5,11 @@ namespace App\Bootstrap;
 use App\BootstrapInterface;
 use Phalcon\Config;
 use Phalcon\DiInterface;
-use PhalconRest\Api;
-use PhalconRest\Middleware\AuthenticationMiddleware;
-use PhalconRest\Middleware\AuthorizationMiddleware;
-use PhalconRest\Middleware\CorsMiddleware;
-use PhalconRest\Middleware\FractalMiddleware;
-use PhalconRest\Middleware\NotFoundMiddleware;
-use PhalconRest\Middleware\OptionsResponseMiddleware;
-use PhalconRest\Middleware\UrlQueryMiddleware;
+use PhalconApi\Api;
+use PhalconApi\Middleware\AuthenticationMiddleware;
+use PhalconApi\Middleware\CorsMiddleware;
+use PhalconApi\Middleware\NotFoundMiddleware;
+use PhalconApi\Middleware\OptionsResponseMiddleware;
 
 class MiddlewareBootstrap implements BootstrapInterface
 {
@@ -22,8 +19,6 @@ class MiddlewareBootstrap implements BootstrapInterface
             ->attach(new CorsMiddleware($config->cors->allowedOrigins->toArray()))
             ->attach(new OptionsResponseMiddleware)
             ->attach(new NotFoundMiddleware)
-            ->attach(new AuthenticationMiddleware)
-            ->attach(new AuthorizationMiddleware)
-            ->attach(new UrlQueryMiddleware);
+            ->attach(new AuthenticationMiddleware);
     }
 }

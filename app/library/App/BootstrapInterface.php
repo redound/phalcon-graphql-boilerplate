@@ -4,7 +4,7 @@ namespace App;
 
 use Phalcon\Config;
 use Phalcon\DiInterface;
-use PhalconRest\Api;
+use PhalconApi\Api;
 
 interface BootstrapInterface {
 

@@ -3,10 +3,10 @@
 /** @var \Phalcon\Config $config */
 $config = null;
 
-/** @var \PhalconRest\Api $app */
+/** @var \PhalconApi\Api $app */
 $app = null;
 
-/** @var \PhalconRest\Http\Response $response */
+/** @var \PhalconApi\Http\Response $response */
 $response = null;
 
 try {
@@ -55,8 +55,8 @@ try {
 
 
     // Instantiate application & DI
-    $di = new PhalconRest\Di\FactoryDefault();
-    $app = new PhalconRest\Api($di);
+    $di = new PhalconApi\Di\FactoryDefault();
+    $app = new PhalconApi\Api($di);
 
     // Bootstrap components
     $bootstrap = new App\Bootstrap(
@@ -89,10 +89,10 @@ try {
 } catch (\Exception $e) {
 
     // Handle exceptions
-    $di = $app && $app->di ? $app->di : new PhalconRest\Di\FactoryDefault();
+    $di = $app && $app->di ? $app->di : new PhalconApi\Di\FactoryDefault();
     $response = $di->getShared(App\Constants\Services::RESPONSE);
-    if(!$response || !$response instanceof PhalconRest\Http\Response){
-        $response = new PhalconRest\Http\Response();
+    if(!$response || !$response instanceof PhalconApi\Http\Response){
+        $response = new PhalconApi\Http\Response();
     }
 
     $debugMode = isset($config->debug) ? $config->debug : (APPLICATION_ENV == 'development');

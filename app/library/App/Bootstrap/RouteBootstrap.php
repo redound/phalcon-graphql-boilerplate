@@ -6,8 +6,7 @@ use App\BootstrapInterface;
 use App\Constants\Services;
 use Phalcon\Config;
 use Phalcon\DiInterface;
-use PhalconRest\Api;
-use Schema\Dispatcher;
+use PhalconApi\Api;
 
 class RouteBootstrap implements BootstrapInterface
 {

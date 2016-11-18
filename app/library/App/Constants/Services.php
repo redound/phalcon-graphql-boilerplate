@@ -2,7 +2,7 @@
 
 namespace App\Constants;
 
-class Services extends \Schema\Constants\Services
+class Services extends \PhalconGraphQL\Constants\Services
 {
     const CONFIG = 'config';
     const VIEW = 'view';

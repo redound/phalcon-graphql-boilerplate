@@ -2,10 +2,10 @@
 
 namespace App\Auth;
 
-use PhalconRest\Auth\Session;
-use PhalconRest\Exception;
+use PhalconApi\Auth\Session;
+use PhalconApi\Exception;
 
-class Manager extends \PhalconRest\Auth\Manager
+class Manager extends \PhalconApi\Auth\Manager
 {
     const LOGIN_DATA_EMAIL = 'email';
 
