@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.5-10.0.21-MariaDB)
-# Database: phalcon_graphql_boilerplate
-# Generation Time: 2016-11-06 21:05:13 +0000
+# Host: 127.0.0.1 (MySQL 5.5.5-10.0.22-MariaDB)
+# Database: phalcon-graphql-boilerplate
+# Generation Time: 2016-11-19 12:55:49 +0000
 # ************************************************************
 
 
@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `projects`;
 
 CREATE TABLE `projects` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `owner_user_id` int(11) unsigned NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `state` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -37,10 +38,10 @@ CREATE TABLE `projects` (
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
 
-INSERT INTO `projects` (`id`, `title`, `state`, `created_at`, `updated_at`)
+INSERT INTO `projects` (`id`, `owner_user_id`, `title`, `state`, `created_at`, `updated_at`)
 VALUES
-	(1,'Project 1',0,'2016-02-28 11:28:33','2016-02-28 11:28:33'),
-	(2,'Project 2',0,'2016-02-28 11:28:33','2016-02-28 11:28:33');
+	(1,1,'Project 1',0,'2016-02-28 11:28:33','2016-02-28 11:28:33'),
+	(2,1,'Project 2',0,'2016-02-28 11:28:33','2016-02-28 11:28:33');
 
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;

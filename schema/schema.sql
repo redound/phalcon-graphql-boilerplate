@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.5.5-10.0.21-MariaDB)
-# Database: phalcon_graphql_boilerplate
-# Generation Time: 2016-11-06 21:05:49 +0000
+# Host: 127.0.0.1 (MySQL 5.5.5-10.0.22-MariaDB)
+# Database: phalcon-graphql-boilerplate
+# Generation Time: 2016-11-19 12:56:37 +0000
 # ************************************************************
 
 
@@ -23,10 +23,9 @@
 # Dump of table projects
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `projects`;
-
 CREATE TABLE `projects` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `owner_user_id` int(11) unsigned NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `state` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -38,8 +37,6 @@ CREATE TABLE `projects` (
 
 # Dump of table tickets
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `tickets`;
 
 CREATE TABLE `tickets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -57,8 +54,6 @@ CREATE TABLE `tickets` (
 
 # Dump of table users
 # ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

@@ -7,6 +7,7 @@ use App\Constants\Types;
 class Project extends \App\Mvc\DateTrackingModel
 {
     public $id;
+    public $ownerUserId;
     public $title;
     public $state;
 
@@ -19,6 +20,7 @@ class Project extends \App\Mvc\DateTrackingModel
     {
         return parent::columnMap() + [
             'id' => 'id',
+            'owner_user_id' => 'ownerUserId',
             'title' => 'title',
             'state' => 'state'
         ];
@@ -40,6 +42,10 @@ class Project extends \App\Mvc\DateTrackingModel
 
         $this->hasMany('id', Ticket::class, 'projectId', [
             'alias' => 'Tickets',
+        ]);
+
+        $this->hasOne('ownerUserId', User::class, 'id', [
+            'alias' => 'OwnerUser'
         ]);
     }
 }

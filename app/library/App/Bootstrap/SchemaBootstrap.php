@@ -7,6 +7,7 @@ use App\Constants\Services;
 use App\Constants\Types;
 use App\Model\Project;
 use App\Model\Ticket;
+use App\Model\User;
 use Phalcon\Config;
 use Phalcon\DiInterface;
 use PhalconApi\Api;
@@ -15,12 +16,15 @@ use PhalconGraphQL\Definition\Field;
 use PhalconGraphQL\Definition\ModelField;
 use PhalconGraphQL\Definition\ModelObjectType;
 use PhalconGraphQL\Definition\ObjectType;
+use PhalconGraphQL\Definition\ObjectTypeGroups\EmbeddedObjectTypeGroup;
 use PhalconGraphQL\Definition\Schema;
 
 class SchemaBootstrap implements BootstrapInterface
 {
     public function run(Api $api, DiInterface $di, Config $config)
     {
+        Schema::setDefaultEmbedMode(Schema::EMBED_MODE_ALL);
+
         $schema = Schema::factory()
 
             /**
@@ -44,14 +48,15 @@ class SchemaBootstrap implements BootstrapInterface
             )
 
             ->object(ObjectType::viewer()
-                ->field(ModelField::all(Project::class)->embed())
+                ->field(ModelField::all(Project::class))
                 ->field(ModelField::find(Project::class))
-                ->field(ModelField::all(Ticket::class)->embed())
+                ->field(ModelField::all(Ticket::class))
                 ->field(ModelField::find(Ticket::class))
             )
 
-            ->embeddedObject(ModelObjectType::factory(Project::class)->embedRelations())
-            ->embeddedObject(ModelObjectType::factory(Ticket::class)->embedRelations());
+            ->objects(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(User::class)))
+            ->objects(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Project::class)))
+            ->objects(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Ticket::class)));
 
         $di->setShared(Services::SCHEMA, $schema);
     }

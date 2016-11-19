@@ -29,4 +29,9 @@ class User extends \App\Mvc\DateTrackingModel
             'password' => 'password'
         ];
     }
+
+    public function excludedFields(){
+
+        return ['password', 'createdAt', 'updatedAt'];
+    }
 }
