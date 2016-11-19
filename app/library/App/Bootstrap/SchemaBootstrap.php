@@ -23,9 +23,9 @@ class SchemaBootstrap implements BootstrapInterface
 {
     public function run(Api $api, DiInterface $di, Config $config)
     {
-        Schema::setDefaultEmbedMode(Schema::EMBED_MODE_ALL);
-
         $schema = Schema::factory()
+
+            ->embed()
 
             /**
              * Define Enum Types
@@ -54,9 +54,9 @@ class SchemaBootstrap implements BootstrapInterface
                 ->field(ModelField::find(Ticket::class))
             )
 
-            ->objects(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(User::class)))
-            ->objects(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Project::class)))
-            ->objects(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Ticket::class)));
+            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(User::class)))
+            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Project::class)))
+            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Ticket::class)));
 
         $di->setShared(Services::SCHEMA, $schema);
     }
