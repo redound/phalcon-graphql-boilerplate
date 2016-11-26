@@ -13,7 +13,9 @@ use Phalcon\DiInterface;
 use PhalconApi\Api;
 use PhalconGraphQL\Definition\EnumType;
 use PhalconGraphQL\Definition\Field;
-use PhalconGraphQL\Definition\ModelField;
+use PhalconGraphQL\Definition\FieldGroups\ModelMutationFieldGroup;
+use PhalconGraphQL\Definition\FieldGroups\ModelQueryFieldGroup;
+use PhalconGraphQL\Definition\ModelInputObjectType;
 use PhalconGraphQL\Definition\ModelObjectType;
 use PhalconGraphQL\Definition\ObjectType;
 use PhalconGraphQL\Definition\ObjectTypeGroups\EmbeddedObjectTypeGroup;
@@ -41,22 +43,39 @@ class SchemaBootstrap implements BootstrapInterface
             )
 
             /**
-             * Define Object Types
+             * Types
+             */
+            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(User::class)))
+            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Project::class)))
+            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Ticket::class)))
+
+            ->inputObject(ModelInputObjectType::create(Project::class))
+            ->inputObject(ModelInputObjectType::update(Project::class))
+
+            ->inputObject(ModelInputObjectType::create(Ticket::class))
+            ->inputObject(ModelInputObjectType::update(Ticket::class))
+
+            /**
+             * Query
              */
             ->object(ObjectType::query()
                 ->field(Field::viewer())
             )
 
             ->object(ObjectType::viewer()
-                ->field(ModelField::all(Project::class))
-                ->field(ModelField::find(Project::class))
-                ->field(ModelField::all(Ticket::class))
-                ->field(ModelField::find(Ticket::class))
+
+                ->fieldGroup(ModelQueryFieldGroup::factory(Project::class))
+                ->fieldGroup(ModelQueryFieldGroup::factory(Ticket::class))
             )
 
-            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(User::class)))
-            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Project::class)))
-            ->objectGroup(EmbeddedObjectTypeGroup::factory(ModelObjectType::factory(Ticket::class)));
+            /**
+             * Mutation
+             */
+            ->object(ObjectType::mutation()
+
+                ->fieldGroup(ModelMutationFieldGroup::factory(Project::class))
+                ->fieldGroup(ModelMutationFieldGroup::factory(Ticket::class))
+            );
 
         $di->setShared(Services::SCHEMA, $schema);
     }

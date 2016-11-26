@@ -30,6 +30,11 @@ class Ticket extends \App\Mvc\DateTrackingModel
         ];
     }
 
+    public function excludedInputFields(){
+
+        return ['createdAt', 'updatedAt'];
+    }
+
     public function typeMap()
     {
         return [
