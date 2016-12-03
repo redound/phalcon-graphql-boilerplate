@@ -13,6 +13,7 @@ use PhalconApi\Api;
 use PhalconGraphQL\Definition\Fields\Field;
 use PhalconGraphQL\Definition\ObjectType;
 use PhalconGraphQL\Definition\Schema;
+use PhalconGraphQL\Plugins\Paging\OffsetLimitPagingPlugin;
 
 class SchemaBootstrap implements BootstrapInterface
 {
@@ -21,7 +22,8 @@ class SchemaBootstrap implements BootstrapInterface
         $schema = Schema::factory()
 
             ->embedList()
-            ->pagingOffset()
+
+            ->plugin(new OffsetLimitPagingPlugin())
 
             ->object(ObjectType::query()
                 ->field(Field::viewer())

@@ -29,7 +29,7 @@ class Project extends \App\Mvc\DateTrackingModel
     public function typeMap()
     {
         return [
-            'state' => Types::TICKET_STATE_ENUM
+            'state' => Types::PROJECT_STATE_ENUM
         ];
     }
 

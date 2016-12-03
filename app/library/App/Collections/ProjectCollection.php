@@ -19,11 +19,6 @@ class ProjectCollection extends ModelCollection
                 ->value('CLOSED', 1, 'Closed')
             )
 
-            ->addAll(Types::VIEWER)
-            ->addFind(Types::VIEWER)
-
-            ->addCreate()
-            ->addUpdate()
-            ->addDelete();
+            ->crud(Types::VIEWER, Types::MUTATION);
     }
 }

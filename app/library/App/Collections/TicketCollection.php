@@ -20,11 +20,6 @@ class TicketCollection extends ModelCollection
                 ->value('COMPLETED', 2, 'Completed')
             )
 
-            ->addAll(Types::VIEWER)
-            ->addFind(Types::VIEWER)
-
-            ->addCreate()
-            ->addUpdate()
-            ->addDelete();
+            ->crud(Types::VIEWER, Types::MUTATION);
     }
 }
