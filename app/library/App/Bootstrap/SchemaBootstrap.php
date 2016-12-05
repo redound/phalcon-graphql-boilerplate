@@ -14,6 +14,8 @@ use PhalconGraphQL\Definition\Fields\Field;
 use PhalconGraphQL\Definition\ObjectType;
 use PhalconGraphQL\Definition\Schema;
 use PhalconGraphQL\Plugins\Paging\OffsetLimitPagingPlugin;
+use PhalconGraphQL\Plugins\Filtering\FilterPlugin;
+use PhalconGraphQL\Plugins\Sorting\SimpleSortingPlugin;
 
 class SchemaBootstrap implements BootstrapInterface
 {
@@ -23,7 +25,9 @@ class SchemaBootstrap implements BootstrapInterface
 
             ->embedList()
 
-            ->plugin(new OffsetLimitPagingPlugin())
+            ->plugin(new FilterPlugin)
+            ->plugin(new SimpleSortingPlugin)
+            ->plugin(new OffsetLimitPagingPlugin)
 
             ->object(ObjectType::query()
                 ->field(Field::viewer())
