@@ -13,6 +13,7 @@ use PhalconApi\Api;
 use PhalconGraphQL\Definition\Fields\Field;
 use PhalconGraphQL\Definition\ObjectType;
 use PhalconGraphQL\Definition\Schema;
+use PhalconGraphQL\Plugins\Authorization\AclAuthorizationPlugin;
 use PhalconGraphQL\Plugins\Paging\OffsetLimitPagingPlugin;
 use PhalconGraphQL\Plugins\Filtering\FilterPlugin;
 use PhalconGraphQL\Plugins\Sorting\SimpleSortingPlugin;
@@ -25,6 +26,7 @@ class SchemaBootstrap implements BootstrapInterface
 
             ->embedList()
 
+            ->plugin(new AclAuthorizationPlugin)
             ->plugin(new FilterPlugin)
             ->plugin(new SimpleSortingPlugin)
             ->plugin(new OffsetLimitPagingPlugin)
