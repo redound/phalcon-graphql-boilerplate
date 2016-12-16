@@ -7,7 +7,7 @@
     "homepage": "http://phalcon-rest.redound.org",
     "require": {
         "firebase/php-jwt": "^3.0",
-        "redound/phalcon-graphql": "dev-development"
+        "redound/phalcon-graphql": "^1.0"
     },
     "authors": [
         {
