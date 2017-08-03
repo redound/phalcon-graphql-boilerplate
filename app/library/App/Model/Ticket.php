@@ -2,9 +2,11 @@
 
 namespace App\Model;
 
+use App\Behaviors\DateTracking;
 use App\Constants\Types;
+use Phalcon\Mvc\Model;
 
-class Ticket extends \App\Mvc\DateTrackingModel
+class Ticket extends Model
 {
     public $id;
     public $title;
@@ -13,6 +15,9 @@ class Ticket extends \App\Mvc\DateTrackingModel
     public $state;
     public $private;
 
+    public $createdAt;
+    public $updatedAt;
+
     public function getSource()
     {
         return 'tickets';
@@ -20,13 +25,16 @@ class Ticket extends \App\Mvc\DateTrackingModel
 
     public function columnMap()
     {
-        return parent::columnMap() + [
+        return [
             'id' => 'id',
             'title' => 'title',
             'project_id' => 'projectId',
             'amount_hours' => 'amountHours',
             'state' => 'state',
-            'private' => 'private'
+            'private' => 'private',
+
+            'created_at' => 'createdAt',
+            'updated_at' => 'updatedAt'
         ];
     }
 
@@ -44,6 +52,8 @@ class Ticket extends \App\Mvc\DateTrackingModel
     }
 
     public function initialize() {
+
+        $this->addBehavior(new DateTracking());
 
         $this->belongsTo('projectId', Project::class, 'id', [
             'alias' => 'Project',

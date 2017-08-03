@@ -4,6 +4,8 @@ namespace App\Constants;
 
 class Types extends \PhalconGraphQL\Definition\Types
 {
+    const USER = "User";
+
     const PROJECT = "Project";
     const PROJECT_STATE_ENUM = "ProjectStateEnum";
 

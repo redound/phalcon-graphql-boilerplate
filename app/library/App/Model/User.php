@@ -2,14 +2,22 @@
 
 namespace App\Model;
 
-class User extends \App\Mvc\DateTrackingModel
+use App\Behaviors\DateTracking;
+use Phalcon\Mvc\Model;
+
+class User extends Model
 {
     public $id;
     public $role;
+    public $email;
     public $firstName;
     public $lastName;
+    public $location;
     public $username;
     public $password;
+
+    public $createdAt;
+    public $updatedAt;
 
     public function getSource()
     {
@@ -18,7 +26,7 @@ class User extends \App\Mvc\DateTrackingModel
 
     public function columnMap()
     {
-        return parent::columnMap() + [
+        return [
             'id' => 'id',
             'role' => 'role',
             'email' => 'email',
@@ -26,12 +34,25 @@ class User extends \App\Mvc\DateTrackingModel
             'first_name' => 'firstName',
             'last_name' => 'lastName',
             'location' => 'location',
-            'password' => 'password'
+            'password' => 'password',
+
+            'created_at' => 'createdAt',
+            'updated_at' => 'updatedAt'
         ];
     }
 
-    public function excludedFields(){
+    public function excludedInputFields(){
 
-        return ['password', 'createdAt', 'updatedAt'];
+        return ['createdAt', 'updatedAt'];
+    }
+
+    public function excludedOutputFields(){
+
+        return ['password'];
+    }
+
+    public function initialize()
+    {
+        $this->addBehavior(new DateTracking());
     }
 }

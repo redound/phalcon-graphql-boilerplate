@@ -2,6 +2,7 @@
 
 namespace App\Collections;
 
+use App\Constants\AclRoles;
 use App\Constants\Types;
 use App\Model\Ticket;
 use PhalconGraphQL\Definition\Collections\ModelCollection;
@@ -13,6 +14,9 @@ class TicketCollection extends ModelCollection
     {
         $this
             ->model(Ticket::class)
+
+            ->allowQuery(AclRoles::AUTHORIZED)
+            ->allowMutation(AclRoles::AUTHORIZED)
 
             ->enum(EnumType::factory(Types::TICKET_STATE_ENUM, 'Represents the state of the ticket')
                 ->value('NEW', 0, 'New')

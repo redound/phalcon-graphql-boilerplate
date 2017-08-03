@@ -23,10 +23,9 @@ class AclBootstrap implements BootstrapInterface
         $acl->addRole($unauthorizedRole);
         $acl->addRole($authorizedRole);
 
-        $acl->addRole(new Acl\Role(AclRoles::ADMINISTRATOR), $authorizedRole);
-        $acl->addRole(new Acl\Role(AclRoles::MANAGER), $authorizedRole);
+        $acl->addRole(new Acl\Role(AclRoles::ADMIN), $authorizedRole);
         $acl->addRole(new Acl\Role(AclRoles::USER), $authorizedRole);
 
-//        $acl->mountMany($api->getCollections());
+        $acl->setDefaultAction(Acl::ALLOW);
     }
 }

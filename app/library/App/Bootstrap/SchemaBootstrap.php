@@ -6,6 +6,7 @@ use App\BootstrapInterface;
 use App\Collections\ProjectCollection;
 use App\Collections\TicketCollection;
 use App\Collections\UserCollection;
+use App\Constants\AclRoles;
 use App\Constants\Services;
 use Phalcon\Config;
 use Phalcon\DiInterface;
@@ -32,6 +33,7 @@ class SchemaBootstrap implements BootstrapInterface
             ->plugin(new OffsetLimitPagingPlugin)
 
             ->object(ObjectType::query()
+                ->allow(AclRoles::AUTHORIZED)
                 ->field(Field::viewer())
             )
 

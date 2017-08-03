@@ -30,8 +30,8 @@ CREATE TABLE `projects` (
   `owner_user_id` int(11) unsigned NOT NULL,
   `title` varchar(255) DEFAULT NULL,
   `state` int(11) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -59,8 +59,8 @@ CREATE TABLE `tickets` (
   `state` int(11) NOT NULL,
   `private` tinyint(1) NOT NULL,
   `project_id` int(11) unsigned NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -92,8 +92,8 @@ CREATE TABLE `users` (
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
-  `created_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -102,7 +102,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `role`, `email`, `username`, `password`, `first_name`, `last_name`, `location`, `created_at`, `updated_at`)
 VALUES
-	(1,'User','test@example.com','demo','$2y$10$1/U1yo5yMdXsrsU3RaeULu7dm7UFX1qq3rnfpbQugv7uIPdo2kMcC','Demo','Account',NULL,'2015-12-28 16:20:58',NULL);
+	(1,'User','test@example.com','demo','$2y$08$MGJFTlFibmxPeGd6aG1neeMZhUZAnuFFSqaPa7mZV7l50jdZH04R6','Demo','Account',NULL,'2017-08-03 10:54:54',NULL);
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
