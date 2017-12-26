@@ -4,16 +4,11 @@
     "description": "Phalcon GraphQL Boilerplate",
     "type": "project",
     "license": "MIT",
-    "homepage": "http://phalcon-rest.redound.org",
     "require": {
         "firebase/php-jwt": "^3.0",
-        "redound/phalcon-graphql": "^1.0"
+        "redound/phalcon-graphql": "^1.2"
     },
     "authors": [
-        {
-            "name": "Olivier Andriessen",
-            "email": "olivierandriessen@gmail.com"
-        },
         {
             "name": "Bart Blok",
             "email": "bart@wittig.nl"
