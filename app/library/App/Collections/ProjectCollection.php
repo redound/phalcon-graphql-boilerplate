@@ -19,6 +19,6 @@ class ProjectCollection extends ModelCollection
                 ->value('CLOSED', 1, 'Closed')
             )
 
-            ->crud(Types::VIEWER, Types::MUTATION);
+            ->crud();
     }
 }

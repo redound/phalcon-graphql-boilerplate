@@ -2,16 +2,15 @@
 
 namespace App\Bootstrap;
 
+use App\Auth\EmailAccountType;
 use Phalcon\Config;
 use PhalconApi\Api;
 use Phalcon\DiInterface;
 use App\BootstrapInterface;
 use App\Constants\Services;
-use App\Auth\UsernameAccountType;
 use Phalcon\Mvc\Url as UrlResolver;
-use Phalcon\Mvc\View\Simple as View;
 use App\User\Service as UserService;
-use App\Auth\Manager as AuthManager;
+use PhalconApi\Auth\Manager as AuthManager;
 use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Mvc\Model\Manager as ModelsManager;
 use PhalconApi\Auth\TokenParsers\JWTTokenParser;
@@ -31,14 +30,12 @@ class ServiceBootstrap implements BootstrapInterface
          */
         $di->set(Services::DB, function () use ($config, $di) {
 
-            $config = $config->get('database')->toArray();
-            $adapter = $config['adapter'];
-            unset($config['adapter']);
+            $dbConfig = $config->get('database')->toArray();
+            $adapter = $dbConfig['adapter'];
+            unset($dbConfig['adapter']);
             $class = 'Phalcon\Db\Adapter\Pdo\\' . $adapter;
 
-            $connection = new $class($config);
-
-            // Assign the eventsManager to the db adapter instance
+            $connection = new $class($dbConfig);
             $connection->setEventsManager($di->get(Services::EVENTS_MANAGER));
 
             return $connection;
@@ -52,17 +49,6 @@ class ServiceBootstrap implements BootstrapInterface
             $url = new UrlResolver;
             $url->setBaseUri($config->get('application')->baseUri);
             return $url;
-        });
-
-        /**
-         * @description Phalcon - \Phalcon\Mvc\View\Simple
-         */
-        $di->set(Services::VIEW, function () use ($config) {
-
-            $view = new View;
-            $view->setViewsDir($config->get('application')->viewsDir);
-
-            return $view;
         });
 
         /**
@@ -82,6 +68,42 @@ class ServiceBootstrap implements BootstrapInterface
             return $modelsManager->setEventsManager($di->get(Services::EVENTS_MANAGER));
         });
 
+        /**
+         * @description Phalcon - ModelsCache
+         */
+        $di->setShared(Services::MODELS_CACHE, function() use ($config) {
+
+            // Use Memcached in production, else none
+            if(!$config->cachingEnabled){
+
+                return new \Phalcon\Cache\Backend\Memory(new \Phalcon\Cache\Frontend\None());
+            }
+            else {
+
+                //Cache data for one hour by default
+                $frontCache = new \Phalcon\Cache\Frontend\Data([
+                    "lifetime" => 3600 * 24,
+                    "prefix" => "models-"
+                ]);
+
+                return new \Phalcon\Cache\Backend\Redis($frontCache, $config->redis->toArray());
+            }
+        });
+
+        /**
+         * @description Phalcon - ModelsMetaData
+         */
+        $di->setShared(Services::MODELS_METADATA, function() use ($config) {
+
+            // Use Memcache in production, else memory
+            if(!$config->cachingEnabled){
+                return new \Phalcon\Mvc\Model\Metadata\Memory();
+            }
+            else {
+                return new \Phalcon\Mvc\Model\MetaData\Redis($config->redis->toArray());
+            }
+        });
+
 
         /**
          * @description PhalconGraphQL - TokenParsers
@@ -97,7 +119,7 @@ class ServiceBootstrap implements BootstrapInterface
         $di->setShared(Services::AUTH_MANAGER, function () use ($di, $config) {
 
             $authManager = new AuthManager($config->get('authentication')->expirationTime);
-            $authManager->registerAccountType(UsernameAccountType::NAME, new UsernameAccountType);
+            $authManager->registerAccountType(EmailAccountType::NAME, new EmailAccountType);
 
             return $authManager;
         });
@@ -116,6 +138,28 @@ class ServiceBootstrap implements BootstrapInterface
             $dispatcher->setDefaultNamespace('App\Handlers');
 
             return $dispatcher;
+        });
+
+        /**
+         * @description App - SchemaCache
+         */
+        $di->setShared(Services::SCHEMA_CACHE, function() use ($config) {
+
+            // Use Memcached in production, else none
+            if(!$config->cachingEnabled){
+
+                return new \Phalcon\Cache\Backend\Memory(new \Phalcon\Cache\Frontend\None());
+            }
+            else {
+
+                //Cache data for one hour by default
+                $frontCache = new \Phalcon\Cache\Frontend\Data([
+                    "lifetime" => 3600 * 24,
+                    "prefix" => "schema-"
+                ]);
+
+                return new \Phalcon\Cache\Backend\Redis($frontCache, $config->redis->toArray());
+            }
         });
     }
 }

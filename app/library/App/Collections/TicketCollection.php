@@ -20,6 +20,6 @@ class TicketCollection extends ModelCollection
                 ->value('COMPLETED', 2, 'Completed')
             )
 
-            ->crud(Types::VIEWER, Types::MUTATION);
+            ->crud();
     }
 }

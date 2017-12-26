@@ -1,13 +1,10 @@
 <?php
 
-/**
- * Read more on Config Files
- * @link http://phalcon-rest.redound.org/config_files.html
- */
-
 return [
 
     'debug' => true,
+    'cachingEnabled' => false,
+
     'hostName' => 'http://phalcon-graphql-boilerplate.redound.dev',
     'clientHostName' => 'http://phalcon-graphql-app.redound.dev',
     'database' => [
@@ -21,5 +18,10 @@ return [
     ],
     'cors' => [
         'allowedOrigins' => ['*']
+    ],
+    'redis' => [
+        "host" => "localhost",
+        "port" => 6379,
+        "persistent" => false
     ]
 ];

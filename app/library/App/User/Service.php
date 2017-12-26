@@ -3,6 +3,7 @@
 namespace App\User;
 
 use App\Constants\AclRoles;
+use App\Constants\UserRoles;
 use App\Model\User;
 
 class Service extends \PhalconApi\User\Service
@@ -16,8 +17,13 @@ class Service extends \PhalconApi\User\Service
 
         $role = AclRoles::UNAUTHORIZED;
 
-        if($userModel && in_array($userModel->role, AclRoles::ALL_ROLES)){
-            $role = $userModel->role;
+        if($userModel){
+
+            $translatedRole = UserRoles::toAclRole($userModel->role);
+
+            if(in_array($translatedRole, AclRoles::ALL_ROLES)) {
+                $role = $translatedRole;
+            }
         }
 
         return $role;

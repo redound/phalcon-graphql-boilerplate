@@ -4,6 +4,7 @@ namespace App\Auth;
 
 use App\Constants\Services;
 use Phalcon\Di;
+use PhalconApi\Auth\Manager;
 
 class EmailAccountType implements \PhalconApi\Auth\AccountType
 {
@@ -14,7 +15,7 @@ class EmailAccountType implements \PhalconApi\Auth\AccountType
         /** @var \Phalcon\Security $security */
         $security = Di::getDefault()->get(Services::SECURITY);
 
-        $email = $data[Manager::LOGIN_DATA_EMAIL];
+        $email = $data[Manager::LOGIN_DATA_USERNAME];
         $password = $data[Manager::LOGIN_DATA_PASSWORD];
 
         /** @var \App\Model\User $user */

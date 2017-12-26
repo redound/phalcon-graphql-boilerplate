@@ -8,4 +8,6 @@ class Services extends \PhalconGraphQL\Constants\Services
     const VIEW = 'view';
 
     const SCHEMA = 'schema';
+    const GRAPHQL_SCHEMA = 'graphqlSchema';
+    const SCHEMA_CACHE = 'schemaCache';
 }

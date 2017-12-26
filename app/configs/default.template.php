@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Read more on Config Files
- * @link http://phalcon-rest.redound.org/config_files.html
- */
-
 return [
 
     'application' => [

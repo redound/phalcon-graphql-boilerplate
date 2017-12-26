@@ -10,6 +10,7 @@ class UserCollection extends ModelCollection
     public function initialize()
     {
         $this
-            ->model(User::class);
+            ->model(User::class)
+            ->crud();
     }
 }
